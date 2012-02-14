@@ -133,8 +133,10 @@ module Google
       title       = xml.at_xpath("xmlns:title").content
       content     = xml.at_xpath("xmlns:content").content
       where       = xml.at_xpath("gd:where")['valueString']
-      start_time  = xml.at_xpath("gd:when")['startTime']
-      end_time    = xml.at_xpath("gd:when")['endTime']
+      if xml.at_xpath("gd:when") # there are situations where gd:when appears to be nil
+        start_time  = xml.at_xpath("gd:when")['startTime']
+        end_time    = xml.at_xpath("gd:when")['endTime']
+      end
       quickadd    = xml.at_xpath("gCal:quickadd") ? xml.at_xpath("gCal:quickadd")['quickadd'] : nil
 
       Event.new(:id => id,
